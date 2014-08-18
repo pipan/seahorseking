@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+#functions, #content_edit, #image_edit, #link_edit, #video_edit, #tag_edit, #poll_edit{
+	float: none;
+	padding: 0px;
+	margin: 0px;
+	border: none;
+	width: auto;
+}
+@media all and (max-width: 1100px){
+	#functions, #content_edit, #image_edit, #link_edit, #video_edit, #tag_edit, #poll_edit{
+		float: left;
+		padding: 5px;
+		margin: 5px;
+		//border: solid #000000 1px;
+		width: 250px;
+	}	
+}
