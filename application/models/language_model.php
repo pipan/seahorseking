@@ -21,10 +21,18 @@ class Language_model extends MY_Model{
 		return $query->row_array();
 	}
 	
+	public function get_by_shortcut($shortcut){
+		$this->db->select($this->select_id);
+		$this->db->from($this->table);
+		$this->db->where('lang_shortcut', $shortcut);
+		$query = $this->db->get();
+		return $query->row_array();
+	}
+	
 	public function exists_shortcut($shortcut){
 		$this->db->select('id');
 		$this->db->from($this->table);
-		$this->db->where('shortcut', $shortcut);
+		$this->db->where('lang_shortcut', $shortcut);
 		return ($this->db->count_all_results() > 0);
 	}
 }

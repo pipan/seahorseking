@@ -1,0 +1,18 @@
+.profile-avatar{
+	float: left;
+}
+	.profile-avatar-image{
+		height: 70px;
+		padding: 5px 10px;
+	}
+.profile-info{
+	float: left;
+	color: #636363;
+}
+		.profile-info-label{
+			float: left;
+			width: 150px;
+		}
+		.profile-info-value{
+			float: left;
+		}

@@ -28,10 +28,9 @@ class User_in_link_model extends MY_Model{
 		return array('user_in_link.id', 'user_in_link.link_id', 'user_in_link.user_id', 'user_in_link.link');
 	}
 	
-	public function get_by_user($user_id, $join = array()){
+	public function get_for_user($user_id, $join = array()){
 		$this->db->select($this->join($join, $this->select_id));
 		$this->db->where('user_id =', $user_id);
-		$this->db->or_where('user_id IS NULL');
 		$query = $this->db->get($this->table);
 		return $query->result_array();
 	}

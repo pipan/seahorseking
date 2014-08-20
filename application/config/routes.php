@@ -37,11 +37,39 @@
 | in the URL cannot be matched to a valid route.
 |
 */
-
+//CMS
+$route['cms/(:any)'] = "cms/$1";
+$route['cms'] = "cms/login";
 //logout
 $route['cms/logout'] = "cms/login/logout";
+//article
+$route['(:any)/article/tag/(:num)/(:any)'] = "article/tag/$3/$2/$1";
+$route['(:any)/article/tag/(:any)'] = "article/tag/$2/1/$1";
+$route['(:any)/article/view/(:any)'] = "article/view/$2/$1";
+$route['(:any)/article/(:num)'] = "article/index/$1/$2";
+$route['article/(:num)'] = "article/index/lang/$1";
+$route['(:any)/article'] = "article/index/$1";
+$route['article'] = "article/index";
+//project
+$route['(:any)/project/tag/(:num)/(:any)'] = "project/tag/$3/$2/$1";
+$route['(:any)/project/tag/(:any)'] = "project/tag/$2/1/$1";
+$route['(:any)/project/view/(:num)/(:any)'] = "project/view/$3/$2/$1";
+$route['(:any)/project/view/(:any)'] = "project/view/$2/1/$1";
+$route['(:any)/project/gallery/(:any)'] = "project/gallery/$2/$1";
+$route['(:any)/project/(:num)'] = "project/index/$1/$2";
+$route['project/(:num)'] = "project/index/lang/$1";
+$route['(:any)/project'] = "project/index/$1";
+$route['project'] = "project/index";
+//member
+$route['(:any)/member/(:num)'] = "member/index/$1/$2";
+$route['member/(:num)'] = "member/index/lang/$1";
+$route['(:any)/member'] = "member/index/$1";
+$route['member'] = "member/index";
+//static
+$route['(:any)/(:any)'] = "static_page/index/$2/$1";
+$route['(:any)'] = "article/index/$1";
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "article";
 //$route['404_override'] = '';
 
 

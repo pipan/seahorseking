@@ -11,7 +11,9 @@
 			}	
 		}
 		?>
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="<?php echo assets_url()."jscript/jscript_general.js";?>"></script>
+		<script type="text/javascript" src="<?php echo assets_url()."jscript/jquery_general.js";?>"></script>
 		<?php 
 		if (isset($jscript)){
 			foreach ($jscript as $j){
@@ -22,7 +24,7 @@
 		}
 		?>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-		<link rel="shortcut icon" href="images/ikonka.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="<?php echo assets_url()."image/icon.ico";?>" type="image/x-icon" />
 		<title><?php echo $title;?></title>
 	</head>
 	<body>

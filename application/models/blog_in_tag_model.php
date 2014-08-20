@@ -36,6 +36,19 @@ class Blog_in_tag_model extends MY_Model{
 		return $query->result_array();
 	}
 	
+	public function get_list_by_data($join = array(), $data, $limit_from, $limit){
+		$this->db->select($this->join($join, $this->select_id));
+		$this->db->where(array('tag.tag_slug =' => $data['tag_slug'], 'tag.lang_id =' => $data['lang_id']));
+		$query = $this->db->get($this->table, $limit, $limit_from);
+		return $query->result_array();
+	}
+	
+	public function count_all_by_tag_slug($tag){
+		$this->db->select($this->join(array('tag'), $this->select_id));
+		$this->db->where(array('tag_slug =' => $tag));
+		return $this->db->count_all_results($this->table);
+	}
+	
 	public function detach_tags($blog_id, $lang_id){
 		$sql = "DELETE FROM blog_in_tag WHERE blog_id=".$blog_id." AND tag_id IN (SELECT id FROM tag WHERE lang_id=".$lang_id.")";
 		$this->db->query($sql);

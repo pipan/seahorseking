@@ -66,9 +66,9 @@ class Blog_parser{
 		}
 	}
 	
-	public function pure_text($text, $blog_id){
+	public function pure_text($text, $blog_id, $ext){
 		//remove image
-		if (($image = read_file("./content/blog/".$blog_id."/image.txt")) != false){
+		if (($image = read_file("./content/article/".$blog_id."/image".$ext.".txt")) != false){
 			$lines = explode(PHP_EOL, $image);
 			$i = 0;
 			$j = 1;
@@ -79,7 +79,7 @@ class Blog_parser{
 			}
 		}
 		//remove video
-		if (($video = read_file("./content/blog/".$blog_id."/video.txt")) != false){
+		if (($video = read_file("./content/article/".$blog_id."/video".$ext.".txt")) != false){
 			$lines = explode(PHP_EOL, $video);
 			$i = 0;
 			$j = 1;
@@ -90,7 +90,7 @@ class Blog_parser{
 			}
 		}
 		//replace link
-		if (($link = read_file("./content/blog/".$blog_id."/link.txt")) != false){
+		if (($link = read_file("./content/article/".$blog_id."/link".$ext.".txt")) != false){
 			$lines = explode(PHP_EOL, $link);
 			$i = 0;
 			$j = 1;

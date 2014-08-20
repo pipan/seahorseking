@@ -24,7 +24,7 @@
 		}
 		?>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-		<link rel="shortcut icon" href="images/ikonka.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="<?php echo assets_url()."image/icon.ico";?>" type="image/x-icon" />
 		<title><?php echo $title;?></title>
 	</head>
 	<body>

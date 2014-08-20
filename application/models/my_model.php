@@ -33,8 +33,9 @@ class MY_Model extends CI_Model{
 			if (strpos($j, '.') !== false){
 				$explode = explode('.', $j);
 				$class = ucfirst($explode[0])."_model"; 
-				$rel = $class::get_relation()[$explode[1]];
-				$this->db->join($this->relation[$j]['join'], $this->relation[$j]['on'], $this->relation[$j]['type']);
+				$rel = $class::get_relation();
+				$rel = $rel[$explode[1]];
+				$this->db->join($this->relation[$rel]['join'], $this->relation[$rel]['on'], $this->relation[$rel]['type']);
 				$select = array_merge($select, $this->relation[$j]['select']);
 			}
 			else{
@@ -59,9 +60,15 @@ class MY_Model extends CI_Model{
 			return $query->result_array();
 		}
 		else{
-			$query = $this->db->get_where($this->table, array('id =' => $id));
+			$query = $this->db->get_where($this->table, array($this->table.'.id =' => $id));
 			return $query->row_array();
 		}
+	}
+	
+	public function get_list($join = array(), $limit_from, $limit){
+		$this->db->select($this->join($join, $this->select_id));
+		$query = $this->db->get($this->table, $limit, $limit_from);
+		return $query->result_array();
 	}
 	
 	public function save($data, $id = false){

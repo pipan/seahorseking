@@ -39,4 +39,10 @@ class Project_model extends MY_Model{
 	public static function get_select_id(){
 		return array('project.id', 'project.project_creator', 'project.project_name', 'project.project_status', 'project.project_date', 'project.project_percentage', 'project.blog_id');
 	}
+	
+	public function get_by_name($project_name, $join = array()){
+		$this->db->select($this->join($join, $this->select_id));
+		$query = $this->db->get_where($this->table, array('project_name =' => $project_name));
+		return $query->row_array();
+	}
 }

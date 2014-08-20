@@ -8,8 +8,8 @@ class Member extends CI_Controller{
 		$this->load->library('bcrypt');
 	
 		$this->load->model('language_model');
-		$this->load->model('translation_model');
 		$this->load->model('translation_group_model');
+		$this->load->model('translation_model');
 		$this->load->model('permission_model');
 		$this->load->model('user_model');
 	

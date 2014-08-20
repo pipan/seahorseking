@@ -86,8 +86,7 @@ class System extends CI_Controller{
 				PRIMARY KEY (id),
 				FOREIGN KEY (project_creator) REFERENCES user(id),
 		        FOREIGN KEY (project_name) REFERENCES translation_group(id),
-		        FOREIGN KEY (project_status) REFERENCES translation_group(id),
-				FOREIGN KEY (blog_id) REFERENCES blog(id))
+		        FOREIGN KEY (project_status) REFERENCES translation_group(id))
 				COLLATE utf8_general_ci,
 				ENGINE innoDB");
 		
@@ -96,7 +95,7 @@ class System extends CI_Controller{
 		        id int(9) NOT NULL AUTO_INCREMENT,
 		        user_id int(9) NOT NULL,
 				project_id int(9) NOT NULL,
-				position_id int(9) NOT NULL,
+				position_id int(9),
 				PRIMARY KEY (id),
 				FOREIGN KEY (user_id) REFERENCES user(id),
 		        FOREIGN KEY (project_id) REFERENCES project(id),
@@ -114,7 +113,8 @@ class System extends CI_Controller{
 				project_id int(9),
 				PRIMARY KEY (id),
 				FOREIGN KEY (user_id) REFERENCES user(id),
-				FOREIGN KEY (blog_name) REFERENCES translation_group(id))
+				FOREIGN KEY (blog_name) REFERENCES translation_group(id),
+				FOREIGN KEY (project_id) REFERENCES project(id))
 				COLLATE utf8_general_ci,
 				ENGINE innoDB");
 		
@@ -184,9 +184,22 @@ class System extends CI_Controller{
 				COLLATE utf8_general_ci,
 				ENGINE innoDB");
 		
-		//ADD foreign key to blog
-		$this->db->query("ALTER TABLE blog
-				ADD FOREIGN KEY (project_id) REFERENCES project(id)");
+		//Table gallery
+		$this->db->query("CREATE TABLE IF NOT EXISTS gallery(
+				id int(9) NOT NULL AUTO_INCREMENT,
+				user_id int(9) NOT NULL,
+				project_id int(9) NOT NULL,
+				image varchar(70) NOT NULL,
+				post_date datetime NOT NULL,
+				PRIMARY KEY (id),
+				FOREIGN KEY (user_id) REFERENCES user(id),
+				FOREIGN KEY (project_id) REFERENCES project(id))
+				COLLATE utf8_general_ci,
+				ENGINE innoDB");
+		
+		//ADD foreign key to project
+		$this->db->query("ALTER TABLE project
+				ADD FOREIGN KEY (blog_id) REFERENCES blog(id)");
 	}
 	
 	public function insert_into(){
@@ -194,6 +207,7 @@ class System extends CI_Controller{
 		$this->db->empty_table('user');
 		$this->db->empty_table('permission');
 		$this->db->empty_table('language');
+		$this->db->empty_table('private_label');
 		
 		//permission
 		$data = array(
@@ -214,7 +228,7 @@ class System extends CI_Controller{
 				'permission_id' => 1,
 		);
 		$this->db->insert('user', $data);
-		mkdir("../content/member/1", 0755);
+		mkdir("./content/member/1", 0755);
 		
 		//language
 		$data = array(
@@ -231,5 +245,11 @@ class System extends CI_Controller{
 				'lang_default' => '0',
 		);
 		$this->db->insert('language', $data);
+		
+		//private_label
+		$data = array(
+				'label' => 'position',
+		);
+		$this->db->insert('private_label', $data);
 	}
 }

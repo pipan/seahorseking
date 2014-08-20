@@ -14,7 +14,7 @@ if (!function_exists("get_dtw_minute")){
 			case "sk":
 			default:
 				if ($minute < 2){
-					$ret = "minutou";
+					$ret = "minútou";
 				}
 				else{
 					$ret = "minutami";
@@ -64,10 +64,10 @@ if (!function_exists("get_dtw_day")){
 			case "sk":
 			default:
 				if ($day < 2){
-					$ret = "dnom";
+					$ret = "dňom";
 				}
 				else{
-					$ret = "dnami";
+					$ret = "dňami";
 				}
 				break;
 		}
@@ -178,5 +178,23 @@ if (!function_exists("date_to_word")){
 		$ret = str_replace('%n', $n, $ret);
 		$ret = str_replace('%w', $w, $ret);
 		return $ret;
+	}
+}
+if (!function_exists("get_age")){
+	function get_age($b_day){
+		$age = "";
+		if ($b_day != null){
+			$date = explode("-", $b_day);
+			$age = date("Y") - $date[0];
+			if (date("m") < $date[1]){
+				$age--;
+			}
+			else if(date("m") == $date[1]){
+				if (date("d") < $date[2]){
+					$age--;
+				}
+			}
+		}
+		return $age;
 	}
 }

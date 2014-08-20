@@ -55,20 +55,26 @@ class Link extends CI_Controller{
 			if ($this->form_validation->run() == true){
 				//image
 				$link = $this->link_model->get(array(), $id);
-				if ($this->upload->do_upload('image') && strlen($this->upload->data()['file_name']) <= 50){
-					//delete previous avatar
-					if ($id > 0 && $link['image'] != null){
-						delete_files("./assets/image/link/".$link['image']);
+				if ($this->upload->do_upload('image')){
+					$upload = $this->upload->data();
+					if (strlen($upload['file_name']) <= 50){
+						//delete previous avatar
+						if ($id > 0 && $link['image'] != null){
+							delete_files("./assets/image/link/".$link['image']);
+						}
+						$table_data['image'] = $upload['file_name'];
 					}
-					$table_data['image'] = $this->upload->data()['file_name'];
 				}
 				//image active
-				if ($this->upload->do_upload('image_active') && strlen($this->upload->data()['file_name']) <= 50){
-					//delete previous avatar
-					if ($id > 0 && $link['image_active'] != null){
-						delete_files("./assets/image/link/".$link['image_active']);
+				if ($this->upload->do_upload('image_active')){
+					$upload = $this->upload->data();
+					if (strlen($upload['file_name']) <= 50){
+						//delete previous avatar
+						if ($id > 0 && $link['image_active'] != null){
+							delete_files("./assets/image/link/".$link['image_active']);
+						}
+						$table_data['image_active'] = $upload['file_name'];
 					}
-					$table_data['image_active'] = $this->upload->data()['file_name'];
 				}
 				$table_data['link_name'] = $this->input->post('name');
 				$this->link_model->save($table_data, $id);

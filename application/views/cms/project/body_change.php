@@ -29,7 +29,7 @@
 					if (isset($blog)){ 
 						foreach ($blog as $b){
 							?>
-							<option value="<?php echo $b['id'];?>" <?php echo set_select('blog', $b['id'], $b['id'] == $project['blog_id']);?>><?php echo get_lang_value($b['id'], $project_language);?></option>
+							<option value="<?php echo $b['id'];?>" <?php echo set_select('blog', $b['id'], $b['id'] == $project['blog_id']);?>><?php echo get_lang_value($b['blog_name'], $project_language['id']);?></option>
 							<?php
 						}
 					}

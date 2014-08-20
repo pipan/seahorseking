@@ -1,16 +1,24 @@
-@CHARSET "UTF-8";
+/*
+* color
+* gray transparent: rgba(140,140,140,0.5)
+* gray: #636363
+* cyan: #00cca7
+*/
 body{
 	margin: 0px;
 	padding: 0px;	
 	background-color:#FFFFFF;
-	background-image:url(../image/background.png);
+	background-image:url(../image/background2.png);
 	background-attachment:fixed;
 	background-size: cover;
 	background-repeat: no-repeat;
-	font-family:calibri;
+	font-family: calibri;
 }
 p{
 	margin:0px;
+	text-align: justify;
+	line-height: 150%;
+	font-size: 18px;
 }
 label{
 	cursor: pointer;
@@ -21,15 +29,26 @@ label{
 label.exception{
 	width: auto;
 }
-input, textarea{
+input[type=submit], input[type=button]{
+	cursor: pointer;
+}
+input, textarea, select{
+	/*
 	background-color:#ffffff;
 	border:solid 1px #929292;
+	*/
+	border: solid 3px transparent;
+	background-color: rgba(140,140,140,0.8);
 	outline: none;
 	padding: 3px;
 }
 input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus{
+	/*
 	border:solid 1px #00cca7;
 	background-color:#ffffff;
+	*/
+	border-left: solid 3px #00cca7;
+	background-color: rgba(140,140,140,0.5);
 }
 textarea{
 	resize: none;
@@ -58,7 +77,7 @@ div{
 	position:fixed;
 	float:left;
 	bottom:0;
-	min-width:200px;
+	width: auto;
 	height:30px;
 	background-color:#00cca7;
 	margin-left:50px;
@@ -70,11 +89,14 @@ div{
 	height: 120px;
 	background-color:rgba(26,33,32,0.9);
 	border-bottom: solid 3px #3a4241;
-	min-width: 650px;
+	min-width: 700px;
 }
 	#logo{   
 		padding-top:25px;
 		padding-left:50px;
+	}
+	#language{
+		float: right;
 	}
 	#header-menu{
 		margin:auto;
@@ -108,7 +130,7 @@ div{
 	top:20px;
 	margin:auto;
 	width:1000px;
-	min-width: 650px;
+	min-width: 700px;
 	height:auto;
 }
 	#content{
@@ -164,6 +186,16 @@ div{
 		border-width: 1px;
 	}
 @media all and (max-width: 1100px){
+	#links{
+		position:fixed;
+		float:left;
+		bottom:0;
+		width: 30px;
+		height:auto;
+		background-color:#00cca7;
+		margin-left: 50px;
+	  	z-index:2;
+	}
 		#header-menu{
 			margin:auto;
 		  	position:relative;
@@ -184,7 +216,7 @@ div{
 			float:none;
 			width:70%;
 			height:auto;
-			padding: 0px 20px 20px 0px;
+			padding: 0px 0px 20px 0px;
 			border-right: none;
 			border-bottom: solid 1px #3a4241;
 		 	min-height: 0px;
@@ -199,10 +231,27 @@ div{
 			height:auto;
 		}
 }
-#projectHeader{
-  overflow:hidden;
-  padding:5px 10px;
-  border-left:solid 3px #00cca7;
+#pages{
+	padding: 0px 40px;
+	text-align: right;
+	clear: both;
+}
+.page_number{
+	display: inline-block
+}
+.language-label{
+	float: left;
+	padding: 10px;
+	color: #ffffff;
+}
+.language-label a{
+	color: #ffffff;
+}
+.language-label a:hover{
+	color: #00cca7;
+}
+a.language-select{
+	color: #00cca7;
 }
 .list
 {
@@ -236,6 +285,7 @@ div{
 
 .block{
 	border-left: solid 3px #00cca7;
+	margin: 0px 0px 20px 0px;
 }
 	.block-header{
 		height: 30px;
@@ -257,6 +307,16 @@ div{
 			color:#636363;
   			padding:3px 20px;
 		}
+		.block-header-abstract{
+			float: left;
+			color:#636363;
+  			padding:3px 20px;
+		}
+		.block-header-link{
+			float: right;
+			color:#636363;
+  			padding:0px 20px;
+		}
 		.block-header a{
 			color:#636363;
 		}
@@ -271,51 +331,23 @@ div{
 	  	padding: 15px;
 	  	position: relative;
 	}
-
-.contactBody{
-  overflow:hidden;
-  padding:15px 20px;
-}
-.contactHeaderObject{
-  font-size:20px;
-	float:left;
-	height:auto;
-}
-
-.projectHeaderObject{
-  font-size:20px;
-	float:left;
-	height:auto;
-}
-.projectHeaderInfo{
-  overflow:hidden;
-  color:#636363;
-  padding:3px 20px;
-}
-.projectHeaderInfoGalery{
-  float:left;
-}
-.projectHeaderInfoStatus{
-  float:right;
-}
-
-.header a{
-  color:#636363;
-}
-.header a:hover{
-  color:#000000;
-}
-
-.member{
-  overflow:hidden;
-  padding:5px 10px 10px 20px;
-  border-left:solid 3px #00cca7;
-}
-.memberHeaderObject{
-  font-size:20px;
-	float:left;
-	height:auto;
-}
+		.block-body-info{
+			color: #636363;
+		}
+			.block-body-info-label{
+				float: left;
+				width: 70px;
+			}
+			.block-body-info-value{
+				float: left;
+			}
+	.block-body a{
+	  	text-decoration: underline;
+	}
+	.block-footer{
+		clear: both;
+		padding: 15px;
+	}
 
 #popup-bg{
   position:fixed;
@@ -329,17 +361,19 @@ div{
   z-index:3;
   opacity:0.8;
 }
-.popUp{
+#image-viewer{
+	display: inline-block;
+}
+.pop-up{
   position:fixed;
   z-index:3;
   background-color:#ffffff;
   padding:20px;
 }
-.popUpTransparent{
+.pop-up-transparent{
   position:fixed;
   z-index:3;
   background-color:transparent;
-  padding:20px;
 }
 .center{
 	margin:auto;
@@ -349,4 +383,11 @@ div{
 }
 .link-item{
 	float:left;
+}
+.tag{
+	float: left;
+	color: #000000;
+	background-color: rgba(140,140,140,0.5);
+	padding: 5px 10px;
+	margin: 0px 10px 0px 0px;
 }

@@ -76,18 +76,21 @@
 				<label>profiles</label>
 				<div style="display: inline-block;"> 
 				<?php
-				if (isset($profile_link)){
-					foreach ($profile_link as $l){              
+				if (isset($link)){
+					foreach ($link as $l){              
 						?>
 						<div id="profile_<?php echo $l["link_name"];?>" style="float:left;overflow:hidden;border-left:solid transparent 1px;">
 							<div class="clickable" style="float:left;" onClick="changeVisibilityById('<?php echo $l["link_name"]."_form";?>');changeClearById('profile_<?php echo $l["link_name"];?>','both','');changeFloatById('profile_<?php echo $l["link_name"];?>','left','');changeBorderColorById('profile_<?php echo $l["link_name"];?>','L','#0defdc');">
 								<?php 
-								if ($l['link'] != null){
+								if (is_in_model_array($l['id'], $profile_link, 'link_id')){
+									$profile_link_item = get_where($profile_link, 'link_id', $l['id']);
+									$link_value = $profile_link_item['link'];
 									?>
 									<img class="logo" src="<?php echo assets_url()."image/link/".$l['image_active'];?>" />
 									<?php 
 								}
 								else{
+									$link_value = "";
 									?>
 									<img class="logo" src="<?php echo assets_url()."image/link/".$l['image'];?>" />
 									<?php 
@@ -95,7 +98,7 @@
 								?>
 							</div>
 							<div id="<?php echo $l["link_name"]."_form";?>" class="invisible">
-								<input type="text" name="profile_link_<?php echo $l["link_name"];?>" value="<?php echo set_value('profile_link_'.$l['link_name'], $l['link']);?>" />
+								<input type="text" name="profile_link_<?php echo $l["link_name"];?>" value="<?php echo set_value('profile_link_'.$l['link_name'], $link_value);?>" />
 							</div>
 						</div>
 						<?php
@@ -104,10 +107,18 @@
 				?>
 				</div>
 			</div>
-        	<div>
-				<label for="description">description</label>
-				<textarea id="description" name="description" style="width: 300px; height: 80px;"><?php echo read_file("./content/member/".$profile["id"]."/description.txt");?></textarea>
-			</div>
+			<?php 
+			if (isset($language)){
+				foreach ($language as $l){
+					?>
+		        	<div>
+						<label for="<?php echo "description_".$l['lang_shortcut'];?>"><?php echo "description ".$l['lang_shortcut'];?></label>
+						<textarea id="<?php echo "description_".$l['lang_shortcut'];?>" name="<?php echo "description_".$l['lang_shortcut'];?>" style="width: 300px; height: 80px;"><?php echo read_file("./content/member/".$profile["id"]."/description_".$l['lang_shortcut'].".txt");?></textarea>
+					</div>
+					<?php 
+				}	
+			}
+			?>
 			<div>
 				<input type="submit" name="editProfile" value="edit" />
 			</div>

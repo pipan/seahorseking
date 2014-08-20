@@ -6,9 +6,11 @@ class Profile extends CI_Controller{
 	public function __construct(){
 		parent::__construct();
 		
+		$this->load->helper('db');
 		$this->load->library('form_validation');
 		$this->load->library('bcrypt');
 		
+		$this->load->model('language_model');
 		$this->load->model('user_model');
 		$this->load->model('link_model');
 		$this->load->model('user_in_link_model');
@@ -25,6 +27,7 @@ class Profile extends CI_Controller{
 	
 	public function index(){
 		if (is_admin_login($this)){
+			$this->data['language'] = $this->language_model->get();
 			$this->form_validation->set_rules('nickname', 'nickname', 'required|max_length[50]');
 			$this->form_validation->set_rules('name', 'name', 'required|max_length[50]');
 			$this->form_validation->set_rules('surname', 'surname', 'required|max_length[50]');
@@ -48,8 +51,10 @@ class Profile extends CI_Controller{
 						'user_birthday' => $birthday,
 				);
 				$this->user_model->save($table_data, $this->session->userdata('admin_id'));
-				if ($this->input->post('description') != false){
-					write_file("./content/member/".$this->session->userdata('admin_id')."/description.txt", $this->input->post('description'));
+				foreach ($this->data['language'] as $l){
+					if ($this->input->post('description_'.$l['lang_shortcut']) != false){
+						write_file("./content/member/".$this->session->userdata('admin_id')."/description_".$l['lang_shortcut'].".txt", $this->input->post('description_'.$l['lang_shortcut']));
+					}
 				}
 				//delete profiles
 				$this->user_in_link_model->detach($this->session->userdata('admin_id'));
@@ -69,7 +74,8 @@ class Profile extends CI_Controller{
 			}
 			$this->data['header_menu_clicked'] = "profile";
 			$this->data['profile'] = $this->user_model->get(array(), $this->session->userdata('admin_id'));
-			$this->data['profile_link'] = $this->user_in_link_model->get_by_user($this->session->userdata('admin_id'), array('link'));
+			$this->data['profile_link'] = $this->user_in_link_model->get_for_user($this->session->userdata('admin_id'), array('link'));
+			$this->data['link'] = $this->link_model->get();
 			$layout_data['title'] = "SHK | profile";
 			$layout_data['header'] = $this->load->view("cms/templates/header", $this->data, true);
 			$layout_data['body'] = $this->load->view("cms/profile/body_index", $this->data, true);
@@ -142,17 +148,20 @@ class Profile extends CI_Controller{
 			$config['max_size']	= '1024';
 			$this->load->library('upload', $config);
 	
-			if ($this->upload->do_upload('avatar') && strlen($this->upload->data()['file_name']) <= 70){
-				$user = $this->user_model->get(array(), $this->session->userdata('admin_id'));
-				//delete previous avatar
-				if ($user['avatar'] != null){
-					delete_files("./content/member/".$this->session->userdata('admin_id')."/".$user['avatar']);
+			if ($this->upload->do_upload('avatar')){
+				$upload = $this->upload->data();
+				if (strlen($upload['file_name']) <= 70){
+					$user = $this->user_model->get(array(), $this->session->userdata('admin_id'));
+					//delete previous avatar
+					if ($user['avatar'] != null){
+						unlink("./content/member/".$this->session->userdata('admin_id')."/".$user['avatar']);
+					}
+					$table_data = array(
+							'avatar' => $upload['file_name'],
+					);
+					$this->user_model->save($table_data, $this->session->userdata('admin_id'));
+					redirect("cms/profile");
 				}
-				$table_data = array(
-						'avatar' => $this->upload->data()['file_name'],
-				);
-				$this->user_model->save($table_data, $this->session->userdata('admin_id'));
-				redirect("cms/profile");
 			}
 			$this->data['header_menu_clicked'] = "profile";
 			$this->data['profile'] = $this->user_model->get(array(), $this->session->userdata('admin_id'));

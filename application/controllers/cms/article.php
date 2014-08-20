@@ -40,7 +40,6 @@ class Article extends CI_Controller{
 	public function change($id = 0, $language = ""){
 		if (is_admin_login($this)){
 			$language = valid_language_id($language);
-			$language = $this->language_model->get(array(), $language);
 			$this->data['project_language'] = $language;
 			$default_lang = $this->language_model->get_default();
 			
@@ -126,7 +125,6 @@ class Article extends CI_Controller{
 	public function save_new_blog($edit_id = 0, $language = ""){
 		if (is_admin_login($this)){
 			$language = valid_language_id($language);
-			$language = $this->language_model->get(array(), $language);
 			$this->data['language'] = $language;
 			
 			if ($edit_id == 0 || $this->blog_model->exists($edit_id)){
@@ -159,7 +157,8 @@ class Article extends CI_Controller{
 						}
 					}
 					if ($this->input->post('thumbnail') > 0 && $this->input->post('image') != false && sizeof($this->input->post('image')) >=  $this->input->post('thumbnail')){
-						$thumbnail = $this->input->post('image')[$this->input->post('thumbnail') - 1]['link'];
+						$image = $this->input->post('image');
+						$thumbnail = $image[$this->input->post('thumbnail') - 1]['link'];
 					}
 					
 					if ($edit_id == 0){

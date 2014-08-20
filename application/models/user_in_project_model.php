@@ -3,8 +3,8 @@ class User_in_project_model extends MY_Model{
 	
 	public function __construct(){
 		parent::__construct('user_in_project');
-		$this->select = array('user_in_project.user_id', 'user_in_project.project_id');
-		$this->select_id = array('user_in_project.id', 'user_in_project.user_id', 'user_in_project.project_id');
+		$this->select = array('user_in_project.user_id', 'user_in_project.project_id', 'user_in_project.position_id');
+		$this->select_id = array('user_in_project.id', 'user_in_project.user_id', 'user_in_project.project_id', 'user_in_project.position_id');
 		$this->relation = array(
 				'project' => array(
 						'join' => 'project',
@@ -22,10 +22,10 @@ class User_in_project_model extends MY_Model{
 	}
 	
 	public static function get_select(){
-		return array('user_in_project.user_id', 'user_in_project.project_id');
+		return array('user_in_project.user_id', 'user_in_project.project_id', 'user_in_project.position_id');
 	}
 	public static function get_select_id(){
-		return array('user_in_project.id', 'user_in_project.user_id', 'user_in_project.project_id');
+		return array('user_in_project.id', 'user_in_project.user_id', 'user_in_project.project_id', 'user_in_project.position_id');
 	}
 	
 	public function get_not_in_project($id){

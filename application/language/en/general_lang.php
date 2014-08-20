@@ -8,3 +8,5 @@ $lang['header_menu_contact'] = "Contact";
 
 //menu
 $lang['menu_ongoing_project'] = "Ongoing projects";
+
+$lang['word_more'] = "more";

@@ -9,12 +9,14 @@ class Login extends CI_Controller{
 		$this->load->library('form_validation');
 		$this->load->library('bcrypt');
 		
+		$this->load->model('language_model');
 		$this->load->model('user_model');
 		$this->load->model('link_model');
 		$this->load->model('shk_link_model');
 		
 		$this->lang->load("general", "en");
 		$this->data['lang'] = $this->lang;
+		$this->data['lang_use'] = $this->language_model->get_by_shortcut('en');
 	}
 	
 	public function login_validation(){
@@ -28,7 +30,8 @@ class Login extends CI_Controller{
 	}
 	
 	public function login_session($name){
-		$this->session->set_userdata('admin_id', $this->user_model->get_login($name)['id']);
+		$login = $this->user_model->get_login($name);
+		$this->session->set_userdata('admin_id', $login['id']);
 	}
 	
 	public function index(){

@@ -12,6 +12,12 @@ class Translation_model extends MY_Model{
 						'type' => 'inner',
 						'select' => Language_model::get_select(),
 				),
+				'group' => array(
+						'join' => 'translation_group',
+						'on' => 'translation.group_id=translation_group.id',
+						'type' => 'inner',
+						'select' => Translation_group_model::get_select(),
+				),
 		);
 	}
 	
@@ -52,7 +58,8 @@ class Translation_model extends MY_Model{
 		}
 		else{
 			return array(
-				'lang_value' => "",
+					'lang_value' => "",
+					'slug' => "",
 			);
 		}
 	}
@@ -65,12 +72,27 @@ class Translation_model extends MY_Model{
 		return ($this->db->count_all_results() > 0);
 	}
 	
-	function get_by_combination($group_id, $lang_id, $join = array()){
+	public function get_by_combination($group_id, $lang_id, $join = array()){
 		$this->db->select($this->join($join, $this->select_id));
 		$this->db->where('group_id', $group_id);
 		$this->db->where('lang_id', $lang_id);
 		$query = $this->db->get($this->table);
 		return $query->row_array();
+	}
+	
+	public function get_by_slug($slug){
+		$this->db->select($this->select_id);
+		$this->db->where('slug', $slug);
+		$query = $this->db->get($this->table);
+		return $query->row_array();
+	}
+	
+	public function get_private($label){
+		$this->db->select($this->join(array('group'), $this->select_id));
+		$this->db->where('translation_group.private_id IN (SELECT id FROM private_label WHERE label=\''.$label.'\')');
+		$this->db->order_by('group_id ASC, lang_id ASC');
+		$query = $this->db->get($this->table);
+		return $query->result_array();
 	}
 	
 	public function update($data, $group_id, $lang_id){
