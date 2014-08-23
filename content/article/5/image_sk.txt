@@ -1,0 +1,4 @@
+TEXT: tree
+LINK: http://www.downtoearthservices.co.uk/resources/tree2.gif
+WIDTH: 100
+ALIGNMENT: left
