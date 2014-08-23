@@ -66,7 +66,7 @@ class Blog_parser{
 		}
 	}
 	
-	public function pure_text($text, $blog_id, $ext){
+	public function pure_text($text, $blog_id, $ext, $formated = false){
 		//remove image
 		if (($image = read_file("./content/article/".$blog_id."/image".$ext.".txt")) != false){
 			$lines = explode(PHP_EOL, $image);
@@ -99,6 +99,21 @@ class Blog_parser{
 				$i += 2;
 				$j++;
 			}
+		}
+		if ($formated){
+			$text = $this->format_text($text);
+		}
+		return $text;
+	}
+	
+	public function format_text($text){
+		$text = str_replace("[B]", "<b>", $text);
+		$text = str_replace("[/B]", "</b>", $text);
+		$text = str_replace("[I]", "<i>", $text);
+		$text = str_replace("[/I]", "</i>", $text);
+		for ($i = 1; $i <= 7; $i++){
+			$text = str_replace("[TITLE".$i."]", "<h".$i.">", $text);
+			$text = str_replace("[/TITLE".$i."]", "</h".$i.">", $text);
 		}
 		return $text;
 	}

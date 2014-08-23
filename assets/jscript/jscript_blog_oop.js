@@ -48,6 +48,12 @@ function EditorApplication(){
 		this.refresh();
 	};
 	
+	this.setTextTitle = function(h){
+		var text = selectEdit($(this.bodyTextareaId), "[TITLE" + h + "]", "[/TITLE" + h + "]");
+		$(this.bodyTextareaId).val(text);
+		this.refresh();
+	};
+	
 	this.refresh = function(){
 		this.setTitle();
 		this.setBlogText();
@@ -74,6 +80,10 @@ function EditorApplication(){
 		text = replaceRegExp(text, "\\[/B\\]", "</b>");
 		text = replaceRegExp(text, "\\[I\\]", "<i>");
 		text = replaceRegExp(text, "\\[/I\\]", "</i>");
+		for (var i = 1; i <= 7; i++){
+			text = replaceRegExp(text, "\\[TITLE" + i + "\\]", "</p><h" + i + ">");
+			text = replaceRegExp(text, "\\[/TITLE" + i + "\\]", "</h" + i + "><p>");
+		}
 		text = replaceRegExp(text, "(\\n|\\r)", "</p><p>");
 		text = "<p>" + text + "</p>";
 		$("#blog_body").html(text);

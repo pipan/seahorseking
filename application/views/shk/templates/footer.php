@@ -1,4 +1,4 @@
-<div id="popup-bg" style="display: none;">
+<div id="popup-bg" style="display: none;" onClick="viewer.end();">
 </div>
 <div id="image-viewer" class="pop-up-transparent" style="display: none;">
 	<img class="clickable" src="" onClick="viewer.end();" />

@@ -11,11 +11,11 @@
 	}
 	?>
 </div>
-<!-- 
+
 <div style="position: absolute; top: 0px; right: 80px;">
 	<input type="text" name="font" onInput="change_font(this);" />
 </div>
- -->
+
 <div id="logo">
 	<a href="<?php echo base_url().$lang_use['lang_shortcut'];?>">
 		<div id="header-logo">

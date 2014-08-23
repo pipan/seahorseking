@@ -19,6 +19,7 @@ class Project extends CI_Controller{
 		$this->load->model('project_model');
 		$this->load->model('gallery_model');
 		$this->load->model('project_in_link_model');
+		$this->load->model('user_in_project_model');
 		
 		$this->data['ongoing_project'] = $this->project_model->get();
 		$this->data['language'] = $this->language_model->get();
@@ -84,6 +85,8 @@ class Project extends CI_Controller{
 		
 		$this->data['style'] = array('style_blog');
 		$this->data['project'] = $this->project_model->get_by_name($slug_id, array());
+		$this->data['project']['link'] = $this->project_in_link_model->get_for_project($this->data['project']['id'], array('link'));
+		$this->data['project']['member'] = $this->user_in_project_model->get_in_project($this->data['project']['id'], array('user'));
 		$this->data['blog'] = $this->blog_model->get_list_by_project($this->data['project']['id'], array(), ($page -1) * $this->limit, $this->limit);
 		$i = 0;
 		foreach ($this->data['blog'] as $b){
@@ -102,7 +105,7 @@ class Project extends CI_Controller{
 		$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
 		$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
 		$layout_data['body'] = $this->load->view("shk/project/body_view", $this->data, true);
-		$layout_data['menu'] = $this->load->view("shk/templates/menu", $this->data, true);
+		$layout_data['menu'] = $this->load->view("shk/project/menu_project", $this->data, true);
 		$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
 		$this->load->view("layout/default", $layout_data);
 	}
@@ -133,6 +136,8 @@ class Project extends CI_Controller{
 		$this->data['style'] = array('style_blog', 'style_gallery');
 		$this->data['jscript'] = array('jscript_gallery');
 		$this->data['project'] = $this->project_model->get_by_name($slug_id, array());
+		$this->data['project']['link'] = $this->project_in_link_model->get_for_project($this->data['project']['id'], array('link'));
+		$this->data['project']['member'] = $this->user_in_project_model->get_in_project($this->data['project']['id'], array('user'));
 		$this->data['gallery'] = $this->gallery_model->get_by_project($this->data['project']['id']);
 		$this->data['block_header_title'] = get_lang_value($this->data['project']['project_name'], $language['id'])." ".$this->lang->line('project_gallery');
 		
@@ -140,7 +145,7 @@ class Project extends CI_Controller{
 		$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
 		$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
 		$layout_data['body'] = $this->load->view("shk/project/body_gallery", $this->data, true);
-		$layout_data['menu'] = $this->load->view("shk/templates/menu", $this->data, true);
+		$layout_data['menu'] = $this->load->view("shk/project/menu_project", $this->data, true);
 		$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
 		$this->load->view("layout/default", $layout_data);
 	}
