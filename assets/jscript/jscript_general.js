@@ -477,7 +477,7 @@ function setImageById(id,image){
   }
 }
 function setImageByElem(elem,image){
-  elem.src=ROOT_DIR+'images/'+image;
+  elem.src=ROOT_DIR+'assets/image/'+image;
 }
 
 /*

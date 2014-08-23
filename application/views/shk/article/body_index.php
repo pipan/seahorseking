@@ -21,11 +21,11 @@ if (isset($blog)){
 					<?php
 				}
 				echo $b['body'];?>
-				<a href="<?php echo base_url()."index.php/".$lang_use['lang_shortcut']."/article/view/".get_lang_slug($b['blog_name'], $lang_use['id'])."-".$b['blog_name'];?>"><?php echo $lang->line('word_more');?></a>
+				<a href="<?php echo base_url().$lang_use['lang_shortcut']."/article/view/".get_lang_slug($b['blog_name'], $lang_use['id'])."-".$b['blog_name'];?>"><?php echo $lang->line('word_more');?></a>
 			</div>
 		</div>
 		<?php
 	}
-	page_div($page, $page_offset, $last_page, base_url()."index.php/".$lang_use['lang_shortcut']."/article/%p");
+	page_div($page, $page_offset, $last_page, base_url().$lang_use['lang_shortcut']."/article/%p");
 }
 ?>

@@ -14,6 +14,7 @@
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="<?php echo assets_url()."jscript/jscript_general.js";?>"></script>
 		<script type="text/javascript" src="<?php echo assets_url()."jscript/jquery_general.js";?>"></script>
+		<script type="text/javascript" src="<?php echo assets_url()."jscript/jscript_events.js";?>"></script>
 		<?php 
 		if (isset($jscript)){
 			foreach ($jscript as $j){
@@ -22,8 +23,18 @@
 				<?php
 			}
 		}
+		if (isset($language) && isset($lang_use) && isset($lang_label)){
+			foreach ($language as $l){
+				if ($l['id'] != $lang_use['id']){
+					?>
+					<link rel="alternate" hreflang="<?php echo $l['lang_shortcut'];?>" href="<?php echo $lang_label[$l['lang_shortcut']]['link'];?>">
+					<?php
+				}
+			}
+		}
 		?>
 		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<meta name="google-site-verification" content="Omr5FFkGKHXf2kN96vPeSInT6gt0n97R43f89S754-M" />
 		<link rel="shortcut icon" href="<?php echo assets_url()."image/icon.ico";?>" type="image/x-icon" />
 		<title><?php echo $title;?></title>
 	</head>
@@ -32,10 +43,10 @@
 			<?php echo $links;?>	
 		</div>
 		<div id="main">
-			<div id="header">
+			<div id="header" class="scroll-effect">
 				<?php echo $header;?>	
 			</div>
-			<div id="body">
+			<div id="body" class="scroll-effect">
 				<div id="content">
 					<?php echo $body;?>	
 				</div>

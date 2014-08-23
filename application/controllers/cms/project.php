@@ -6,6 +6,7 @@ class Project extends CI_Controller{
 		
 		$this->load->helper('text');
 		$this->load->helper('image');
+		$this->load->helper('db');
 		$this->load->library('form_validation');
 		
 		$this->load->model('language_model');
@@ -20,6 +21,7 @@ class Project extends CI_Controller{
 		$this->load->model('project_in_tag_model');
 		$this->load->model('blog_in_tag_model');
 		$this->load->model('gallery_model');
+		$this->load->model('project_in_link_model');
 		
 		$this->data['header_menu_clicked'] = "project";
 	}
@@ -122,11 +124,28 @@ class Project extends CI_Controller{
 							'project_percentage' => $this->input->post('percentage'),
 							'blog_id' => $blog_id,
 					);
-					$this->project_model->save($table_data, $id);
+					$project_id = $this->project_model->save($table_data, $id);
 				}
+				//delete profiles
+				$this->project_in_link_model->detach($project_id);
+				//add profiles
+				$profiles = $this->link_model->get();
+				foreach ($profiles as $p){
+					if ($this->input->post('project_link_'.$p['link_name']) != false){
+						$table_data = array(
+								'link_id' => $p['id'],
+								'project_id' => $project_id,
+								'link' => $this->input->post('project_link_'.$p['link_name']),
+						);
+						$this->project_in_link_model->save($table_data);
+					}
+				}
+				$this->session->set_userdata('change', 1);
 				redirect("cms/project");
 			}
 			$this->data['blog'] = $this->blog_model->get_by_project($id);
+			$this->data['project_link'] = $this->project_in_link_model->get_for_project($id, array('link'));
+			$this->data['link'] = $this->link_model->get();
 			$layout_data['title'] = "SHK | project";
 			$layout_data['header'] = $this->load->view("cms/templates/header", $this->data, true);
 			$layout_data['body'] = $this->load->view("cms/project/body_change", $this->data, true);

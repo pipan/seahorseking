@@ -12,10 +12,10 @@ body{
 	background-attachment:fixed;
 	background-size: cover;
 	background-repeat: no-repeat;
-	font-family: calibri;
+	font-family: 'Segoe UI Light', /*'Agency FB',*/ calibri;
 }
 p{
-	margin:0px;
+	//margin:0px;
 	text-align: justify;
 	line-height: 150%;
 	font-size: 18px;
@@ -84,24 +84,54 @@ div{
   	z-index:2;
 }
 #header{
+	position: relative;
 	overflow: visible;
 	width: 100%;
 	height: 120px;
 	background-color:rgba(26,33,32,0.9);
-	border-bottom: solid 3px #3a4241;
+	border-bottom: solid 3px rgba(58,66,65,0.9);
 	min-width: 700px;
+	z-index: 2;
 }
 	#logo{   
-		padding-top:25px;
-		padding-left:50px;
+		padding: 10px 0px 0px 50px;
 	}
+		#header-logo{
+			position: relative;
+			float: left;
+		}
+			#header-logo-image{
+				width: 23px;
+				height: 61px;
+			}
+		#header-logo-text{
+			position: relative;
+			top: 10px;
+			left: 10px;
+			float: left;
+			color: #00cca7;
+			font-size: 38px;
+		}
+	#logo_small{
+		position: absolute;
+		left: 20px;
+		top: 10px;
+		float: left;
+		display: none;
+	}
+		#header-logo-small{
+			width: 11px;
+		}
 	#language{
+		position: absolute;
+		right: 0px;
+		top:0px;
 		float: right;
 	}
 	#header-menu{
 		margin:auto;
 	  	position:relative;
-	  	top:13px;
+	  	top: 10px;
 	  	height:38px;
 		width:1000px;
 	}
@@ -119,6 +149,38 @@ div{
 	.header-menu-clicked{
 		border-bottom: solid 3px #00cca7;
 	}
+.scroll#header{
+	position: fixed;
+	top: 0px;
+	overflow: visible;
+	width: 100%;
+	height: 45px;
+	background-color:rgba(26,33,32,0.9);
+	border-bottom: solid 3px rgba(58,66,65,0.9);
+	min-width: 700px;
+	z-index: 2;
+}
+	.scroll #logo{   
+		display: none;
+		padding: 25px 0px 0px 50px;
+	}
+	.scroll #logo_small{
+		position: absolute;
+		left: 20px;
+		top: 10px;
+		display: block;
+		float: left;
+	}
+	.scroll #language{
+		float: right;
+	}
+	.scroll #header-menu{
+		margin:auto;
+	  	position:relative;
+	  	top: 10px;
+	  	height:38px;
+		width:1000px;
+	}
 .white a{
   color: #ffffff;
 }
@@ -127,18 +189,18 @@ div{
 }
 #body{
 	position:relative;
-	top:20px;
-	margin:auto;
+	margin: 20px auto;
 	width:1000px;
 	min-width: 700px;
 	height:auto;
+	color: #262626;
 }
 	#content{
 	  	position:relative;
 		float:left;
 		width:70%;
 		height:auto;
-		padding: 0px 20px 20px 0px;
+		padding: 0px 20px 0px 0px;
 		border-right: solid 1px #3a4241;
 		border-bottom: none;
 	 	min-height:200px;
@@ -185,12 +247,19 @@ div{
 		border-color: #0B243B;
 		border-width: 1px;
 	}
+.scroll#body{
+	position:relative;
+	margin: 65px auto 20px auto;
+	width:1000px;
+	min-width: 700px;
+	height:auto;
+}
 @media all and (max-width: 1100px){
 	#links{
 		position:fixed;
 		float:left;
 		bottom:0;
-		width: 30px;
+		width: auto;
 		height:auto;
 		background-color:#00cca7;
 		margin-left: 50px;
@@ -199,14 +268,20 @@ div{
 		#header-menu{
 			margin:auto;
 		  	position:relative;
-		  	top:13px;
+		  	top:10px;
+		  	height:38px;
+			width:70%;
+		}
+		.scroll #header-menu{
+			margin:auto;
+		  	position:relative;
+		  	top: 10px;
 		  	height:38px;
 			width:70%;
 		}
 	#body{
 		position:relative;
-		top:20px;
-		margin:auto;
+		margin: 20px auto;
 		width:auto;
 		height:auto;
 	}
@@ -216,7 +291,7 @@ div{
 			float:none;
 			width:70%;
 			height:auto;
-			padding: 0px 0px 20px 0px;
+			padding: 0px;
 			border-right: none;
 			border-bottom: solid 1px #3a4241;
 		 	min-height: 0px;
@@ -230,6 +305,13 @@ div{
 			left:0px;
 			height:auto;
 		}
+	.scroll#body{
+		position:relative;
+		top: 45px;
+		margin: 20px auto;
+		width:auto;
+		height:auto;
+	}
 }
 #pages{
 	padding: 0px 40px;
@@ -267,7 +349,13 @@ a.language-select{
 
 .logo{
   padding:5px;
-  width:20px;
+  height:20px;
+  opacity: 0.5;
+}
+.logo:hover{
+  padding:5px;
+  height:20px;
+  opacity: 1.0;
 }
 .avatar{
   max-width:70px;
@@ -288,16 +376,17 @@ a.language-select{
 	margin: 0px 0px 20px 0px;
 }
 	.block-header{
+		position: relative;
 		height: 30px;
 		background-color: rgba(140,140,140,0.5);
-		color: #000000;
-		padding: 2px 0px 0px 0px;
 	}
 		.block-header-date{
 			padding-top: 4px;
 			float: left;
 		}
 		.block-header-title{
+			position: relative;
+			top: -2px;
 			font-size: 20px;
 			float: left;
 			padding: 0px 0px 0px 20px;
@@ -317,6 +406,11 @@ a.language-select{
 			color:#636363;
   			padding:0px 20px;
 		}
+			.block-header-link .logo:hover{
+			  padding:5px;
+			  height:20px;
+			  opacity: 1.0;
+			}
 		.block-header a{
 			color:#636363;
 		}
@@ -330,6 +424,7 @@ a.language-select{
 	.block-body{
 	  	padding: 15px;
 	  	position: relative;
+	  	color: #636363;
 	}
 		.block-body-info{
 			color: #636363;
@@ -382,7 +477,9 @@ a.language-select{
 	width:30px;
 }
 .link-item{
-	float:left;
+	float: left;
+	text-align: center;
+	width: auto;
 }
 .tag{
 	float: left;
@@ -390,4 +487,11 @@ a.language-select{
 	background-color: rgba(140,140,140,0.5);
 	padding: 5px 10px;
 	margin: 0px 10px 0px 0px;
+}
+@media all and (max-width: 1100px){
+	#links .link-item{
+		float: none;
+		text-align: center;
+		width: auto;
+	}	
 }

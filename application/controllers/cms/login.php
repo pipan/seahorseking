@@ -10,13 +10,18 @@ class Login extends CI_Controller{
 		$this->load->library('bcrypt');
 		
 		$this->load->model('language_model');
+		$this->load->model('translation_group_model');
+		$this->load->model('translation_model');
 		$this->load->model('user_model');
 		$this->load->model('link_model');
+		$this->load->model('blog_model');
+		$this->load->model('project_model');
 		$this->load->model('shk_link_model');
 		
 		$this->lang->load("general", "en");
 		$this->data['lang'] = $this->lang;
 		$this->data['lang_use'] = $this->language_model->get_by_shortcut('en');
+		$this->data['ongoing_project'] = $this->project_model->get();
 	}
 	
 	public function login_validation(){
@@ -32,6 +37,7 @@ class Login extends CI_Controller{
 	public function login_session($name){
 		$login = $this->user_model->get_login($name);
 		$this->session->set_userdata('admin_id', $login['id']);
+		$this->session->set_userdata('change', 0);
 	}
 	
 	public function index(){
@@ -60,7 +66,12 @@ class Login extends CI_Controller{
 	}
 	
 	public function logout(){
+		if ($this->session->userdata('change') == 1){
+			$this->load->library('sitemap');
+			$this->sitemap->create_map();
+		}
 		$this->session->unset_userdata('admin_id');
+		$this->session->unset_userdata('change');
 		redirect("cms/login");
 	}
 }

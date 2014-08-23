@@ -2,8 +2,13 @@
 	<a href="<?php echo base_url()."index.php/cms/logout";?>">logout</a>
 </div>
 <div id="logo">
-	<a href="<?php echo base_url()."index.php";?>">
-		<img src="<?php echo assets_url()."image/logo2.png";?>" alt="SeaHorseKing Logo">
+	<a href="<?php echo base_url()."index.php/cms";?>">
+		<div id="header-logo">
+			<img id="header-logo-image" src="<?php echo assets_url()."image/shk_logo.png";?>" alt="SeaHorseKing Logo">
+		</div>
+		<div id="header-logo-text">
+			Seahorse King
+		</div>
 	</a>
 </div>
 <div id="header-menu">

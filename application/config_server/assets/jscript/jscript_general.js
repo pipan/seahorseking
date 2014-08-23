@@ -3,8 +3,8 @@
 /*
 *Variables
 */
-var BASE_URL = 'http://seahorseking.yweb.sk';
-var ROOT_DIR = 'http://seahorseking.yweb.sk';
+var BASE_URL = 'http://seahorseking.yweb.sk/';
+var ROOT_DIR = 'http://seahorseking.yweb.sk/';
 var delay_array=new Array();
 var specialSetPage;
 
@@ -477,7 +477,7 @@ function setImageById(id,image){
   }
 }
 function setImageByElem(elem,image){
-  elem.src=ROOT_DIR+'images/'+image;
+  elem.src=ROOT_DIR+'assets/image/'+image;
 }
 
 /*

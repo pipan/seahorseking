@@ -10,7 +10,6 @@
 				<td>title</td>
 				<td>project</td>
 				<td>post date</td>
-				<td></td>
 				<?php 
 				if (isset($language)){
 					foreach ($language as $l){
@@ -29,7 +28,6 @@
 						<td><?php echo get_lang_value($b['blog_name']);?></td>
 						<td><?php echo get_lang_value($b['project_name']);?></td>
 						<td><?php echo $b['post_date']?></td>
-						<td><a href = "<?php echo base_url()."index.php/admin/blog/edit/".$b["id"];?>">change</a></td>
 						<?php 
 						if (isset($language)){
 							foreach ($language as $l){

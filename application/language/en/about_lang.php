@@ -1,2 +1,2 @@
 <?php
-$lang['contact_title'] = "SHK | about";
+$lang['about_title'] = "SHK | about";

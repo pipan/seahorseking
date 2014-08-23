@@ -33,7 +33,7 @@ class Article extends CI_Controller{
 		$this->lang->load('general', $language['lang_shortcut']);
 		$this->lang->load('article', $language['lang_shortcut']);
 		$this->data['lang'] = $this->lang;
-		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/article/'.$page, array(), $this->data['language'], $language);
+		$this->data['lang_label'] = get_lang_label(base_url().'%l/article/'.$page, array(), $this->data['language'], $language);
 		
 		$this->data['style'] = array('style_blog');
 		$this->data['blog'] = $this->blog_model->get_list(array('project'), ($page -1) * $this->limit, $this->limit);
@@ -79,7 +79,7 @@ class Article extends CI_Controller{
 					'%s' => get_lang_slug($slug_id, $l['id'])."-".$slug_id,
 			);
 		}
-		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/article/view/%s', $replace, $this->data['language'], $language);
+		$this->data['lang_label'] = get_lang_label(base_url().'%l/article/view/%s', $replace, $this->data['language'], $language);
 		//set all data
 		$this->data['style'] = array('style_blog');
 		$this->data['blog'] = $this->blog_model->get_by_blog_name($slug_id, array('project', 'user'));
@@ -108,7 +108,7 @@ class Article extends CI_Controller{
 		$this->lang->load('general', $language['lang_shortcut']);
 		$this->lang->load('article', $language['lang_shortcut']);
 		$this->data['lang'] = $this->lang;
-		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/article', array(), $this->data['language'], $language);
+		$this->data['lang_label'] = get_lang_label(base_url().'%l/article', array(), $this->data['language'], $language);
 		
 		if ($page < 1){
 			$page = 1;

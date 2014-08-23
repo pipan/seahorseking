@@ -11,9 +11,24 @@
 	}
 	?>
 </div>
+<!-- 
+<div style="position: absolute; top: 0px; right: 80px;">
+	<input type="text" name="font" onInput="change_font(this);" />
+</div>
+ -->
 <div id="logo">
-	<a href="<?php echo base_url();?>">
-		<img src="<?php echo assets_url()."image/logo2.png";?>" alt="SeaHorseKing Logo">
+	<a href="<?php echo base_url().$lang_use['lang_shortcut'];?>">
+		<div id="header-logo">
+			<img id="header-logo-image" src="<?php echo assets_url()."image/shk_logo.png";?>" alt="SeaHorseKing Logo">
+		</div>
+		<div id="header-logo-text">
+			Seahorse King
+		</div>
+	</a>
+</div>
+<div id="logo_small">
+	<a href="<?php echo base_url().$lang_use['lang_shortcut'];?>">
+		<img id="header-logo-small" src="<?php echo assets_url()."image/shk_logo.png";?>" alt="SeaHorseKing Logo">
 	</a>
 </div>
 <div id="header-menu">

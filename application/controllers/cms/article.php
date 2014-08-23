@@ -199,7 +199,12 @@ class Article extends CI_Controller{
 						$table_data['post_date'] = date("Y-n-d H:i:s");
 						$table_data['blog_name'] = $blog_name;
 						$id = $this->blog_model->save($table_data);
-						mkdir("./content/article/".$id, 0777);
+						if (!file_exists("./content/article/".$id)){
+							mkdir("./content/article/".$id, 0777);
+						}
+						if (!file_exists("./content/article/".$id."/comments")){
+							mkdir("./content/article/".$id."/comments", 0755);
+						}
 					}
 					write_file("./content/article/".$id."/title".$lang_ext.".txt", $this->input->post('title'));
 					write_file("./content/article/".$id."/titleTextarea".$lang_ext.".txt", $this->input->post('titleTextarea'));
@@ -246,9 +251,6 @@ class Article extends CI_Controller{
 					if ($edit_id > 0){
 						$this->blog_in_tag_model->detach_tags($edit_id, $language['id']);
 					}
-					else{
-						mkdir("./content/article/".$id."/comments", 0755);
-					}
 					if ($this->input->post('tag') != false){
 						foreach ($this->input->post('tag') as $tag){
 							$table_data = array(
@@ -264,6 +266,7 @@ class Article extends CI_Controller{
 							$this->blog_in_tag_model->save($table_data);
 						}
 					}
+					$this->session->set_userdata('change', 1);
 					echo "success";
 				}
 			}

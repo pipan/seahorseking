@@ -18,6 +18,7 @@ class Project extends CI_Controller{
 		$this->load->model('blog_model');
 		$this->load->model('project_model');
 		$this->load->model('gallery_model');
+		$this->load->model('project_in_link_model');
 		
 		$this->data['ongoing_project'] = $this->project_model->get();
 		$this->data['language'] = $this->language_model->get();
@@ -32,13 +33,14 @@ class Project extends CI_Controller{
 		$this->lang->load('general', $language['lang_shortcut']);
 		$this->lang->load('project', $language['lang_shortcut']);
 		$this->data['lang'] = $this->lang;
-		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/project/'.$page, array(), $this->data['language'], $language);
+		$this->data['lang_label'] = get_lang_label(base_url().'%l/project/'.$page, array(), $this->data['language'], $language);
 		
 		$this->data['style'] = array('style_blog');
 		$this->data['project'] = $this->project_model->get_list(array('blog'), ($page -1) * $this->limit, $this->limit);
 		$i = 0;
 		foreach ($this->data['project'] as $p){
 			$this->data['project'][$i]['body'] = word_limiter(Blog_parser::pure_text(read_file("./content/article/".$p['blog_id']."/bodyTextarea".$language_ext.".txt"), $p['blog_id'], $language_ext), 50);
+			$this->data['project'][$i]['link'] = $this->project_in_link_model->get_for_project($p['id'], array('link'));
 			$i++;
 		}
 		if ($page < 1){
@@ -78,7 +80,7 @@ class Project extends CI_Controller{
 					'%s' => get_lang_slug($slug_id, $l['id'])."-".$slug_id,
 			);
 		}
-		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/project/view/'.$page.'/%s', $replace, $this->data['language'], $language);
+		$this->data['lang_label'] = get_lang_label(base_url().'%l/project/view/'.$page.'/%s', $replace, $this->data['language'], $language);
 		
 		$this->data['style'] = array('style_blog');
 		$this->data['project'] = $this->project_model->get_by_name($slug_id, array());
@@ -126,7 +128,7 @@ class Project extends CI_Controller{
 					'%s' => get_lang_slug($slug_id, $l['id'])."-".$slug_id,
 			);
 		}
-		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/project/gallery/%s', $replace, $this->data['language'], $language);
+		$this->data['lang_label'] = get_lang_label(base_url().'%l/project/gallery/%s', $replace, $this->data['language'], $language);
 	
 		$this->data['style'] = array('style_blog', 'style_gallery');
 		$this->data['jscript'] = array('jscript_gallery');

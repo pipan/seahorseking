@@ -5,6 +5,6 @@
 		</div>
 	</div>
 	<div class="block-body">
-		You can find us wherever
+		email: seahorseking1@gmail.com
 	</div>
 </div>

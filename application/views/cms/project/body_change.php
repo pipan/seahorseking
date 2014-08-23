@@ -22,6 +22,41 @@
 				<input id="percentage" type="text" name="percentage" value="<?php echo set_value('name', $project['project_percentage']);?>" />
 			</div>
 			<div>
+				<label>profiles</label>
+				<div style="display: inline-block;"> 
+				<?php
+				if (isset($link)){
+					foreach ($link as $l){              
+						?>
+						<div id="profile_<?php echo $l["link_name"];?>" style="float:left;overflow:hidden;border-left:solid transparent 1px;">
+							<div class="clickable" style="float:left;" onClick="changeVisibilityById('<?php echo $l["link_name"]."_form";?>');changeClearById('profile_<?php echo $l["link_name"];?>','both','');changeFloatById('profile_<?php echo $l["link_name"];?>','left','');changeBorderColorById('profile_<?php echo $l["link_name"];?>','L','#0defdc');">
+								<?php 
+								if (is_in_model_array($l['id'], $project_link, 'link_id')){
+									$project_link_item = get_where($project_link, 'link_id', $l['id']);
+									$link_value = $project_link_item['link'];
+									?>
+									<img class="logo" src="<?php echo assets_url()."image/link/".$l['image_active'];?>" />
+									<?php 
+								}
+								else{
+									$link_value = "";
+									?>
+									<img class="logo" src="<?php echo assets_url()."image/link/".$l['image'];?>" />
+									<?php 
+								}
+								?>
+							</div>
+							<div id="<?php echo $l["link_name"]."_form";?>" class="invisible">
+								<input type="text" name="project_link_<?php echo $l["link_name"];?>" value="<?php echo set_value('project_link_'.$l['link_name'], $link_value);?>" />
+							</div>
+						</div>
+						<?php
+					}
+				}
+				?>
+				</div>
+			</div>
+			<div>
 				<label for="blog">blog</label>
 				<select id="blog" name="blog">
 					<option value="0">None</option>

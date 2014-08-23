@@ -184,6 +184,18 @@ class System extends CI_Controller{
 				COLLATE utf8_general_ci,
 				ENGINE innoDB");
 		
+		//Table project_in_link
+		$this->db->query("CREATE TABLE IF NOT EXISTS project_in_link(
+				id int(9) NOT NULL AUTO_INCREMENT,
+				link_id int(9) NOT NULL,
+				project_id int(9) NOT NULL,
+				link varchar(50) NOT NULL,
+				PRIMARY KEY (id),
+				FOREIGN KEY (link_id) REFERENCES link(id) ON DELETE CASCADE,
+				FOREIGN KEY (project_id) REFERENCES project(id))
+				COLLATE utf8_general_ci,
+				ENGINE innoDB");
+		
 		//Table gallery
 		$this->db->query("CREATE TABLE IF NOT EXISTS gallery(
 				id int(9) NOT NULL AUTO_INCREMENT,
@@ -251,5 +263,10 @@ class System extends CI_Controller{
 				'label' => 'position',
 		);
 		$this->db->insert('private_label', $data);
+	}
+	
+	public function sitemap(){
+		$this->load->library('sitemap');
+		$this->sitemap->create_map();
 	}
 }

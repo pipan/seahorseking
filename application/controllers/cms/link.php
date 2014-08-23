@@ -59,8 +59,8 @@ class Link extends CI_Controller{
 					$upload = $this->upload->data();
 					if (strlen($upload['file_name']) <= 50){
 						//delete previous avatar
-						if ($id > 0 && $link['image'] != null){
-							delete_files("./assets/image/link/".$link['image']);
+						if ($id > 0 && $link['image'] != null && $link['image'] != $upload['file_name'] && file_exists("./assets/image/link/".$link['image'])){
+							unlink("./assets/image/link/".$link['image']);
 						}
 						$table_data['image'] = $upload['file_name'];
 					}
@@ -70,8 +70,8 @@ class Link extends CI_Controller{
 					$upload = $this->upload->data();
 					if (strlen($upload['file_name']) <= 50){
 						//delete previous avatar
-						if ($id > 0 && $link['image_active'] != null){
-							delete_files("./assets/image/link/".$link['image_active']);
+						if ($id > 0 && $link['image_active'] != null && $link['image_active'] != $upload['file_name'] && file_exists("./assets/image/link/".$link['image_active'])){
+							unlink("./assets/image/link/".$link['image_active']);
 						}
 						$table_data['image_active'] = $upload['file_name'];
 					}

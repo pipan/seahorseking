@@ -35,7 +35,7 @@
 		foreach ($tag as $t){
 			?>
 			<div class="tag">
-				<a href="<?php echo base_url()."index.php/".$lang_use['lang_shortcut']."/article/tag/".$t['tag_slug'];?>"><?php echo $t['tag_name'];?></a>
+				<a href="<?php echo base_url().$lang_use['lang_shortcut']."/article/tag/".$t['tag_slug'];?>"><?php echo $t['tag_name'];?></a>
 			</div>
 			<?php
 		}

@@ -29,7 +29,7 @@ class Static_page extends CI_Controller{
 		$this->lang->load('general', $language['lang_shortcut']);
 		$this->lang->load($static, $language['lang_shortcut']);
 		$this->data['lang'] = $this->lang;
-		$this->data['lang_label'] = get_lang_label(base_url().'index.php/%l/'.$static, array(), $this->data['language'], $language);
+		$this->data['lang_label'] = get_lang_label(base_url().'%l/'.$static, array(), $this->data['language'], $language);
 		
 		$layout_data['title'] = $this->lang->line($static.'_title');
 		$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);

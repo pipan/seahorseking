@@ -14,7 +14,7 @@ if (isset($member)){
 							?>
 							<div class="link-item">
 								<a href="<?php echo $l['link'];?>" target="_blank" title="<?php echo $l['link_name'];?>">
-						    		<img class="logo" src="<?php echo assets_url()."image/link/".$l['image'];?>" alt="<?php echo $l['link_name'];?>" />
+						    		<img class="logo" src="<?php echo assets_url()."image/link/".$l['image'];?>" alt="<?php echo $l['link_name'];?>" onMouseOver="setImageByElem(this, '<?php echo "link/".$l['image_active'];?>');" onMouseOut="setImageByElem(this, '<?php echo "link/".$l['image'];?>');" />
 						    	</a>
 						    </div>
 							<?php
@@ -53,8 +53,9 @@ if (isset($member)){
 						</div>
 					</div>
 				</div>
-				<?php
-				echo $m['body'];?>
+				<p>
+				<?php echo $m['body'];?>
+				</p>
 			</div>
 		</div>
 		<?php
