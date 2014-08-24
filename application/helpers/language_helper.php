@@ -65,3 +65,10 @@ if (!function_exists("get_lang_slug")){
 		return $tmp['slug'];
 	}
 }
+if (!function_exists("get_lang_db")){
+	function get_lang_db($group_id, $lang_id = false){
+		$t_model = new Translation_model();
+		$tmp = $t_model->get_translation($group_id, $lang_id);
+		return $tmp;
+	}
+}

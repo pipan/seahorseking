@@ -19,11 +19,13 @@ class Article extends CI_Controller{
 		$this->load->model('project_model');
 		$this->load->model('tag_model');
 		$this->load->model('blog_in_tag_model');
+		$this->load->model('static_page_model');
 		
 		$this->data['ongoing_project'] = $this->project_model->get();
 		$this->data['language'] = $this->language_model->get();
 		$this->data['link'] = $this->shk_link_model->get_active(array('link'));
 		$this->data['header_menu_clicked'] = "article";
+		$this->data['static_page'] = $this->static_page_model->get();
 	}
 	
 	public function index($language = "", $page = 1){
@@ -72,32 +74,46 @@ class Article extends CI_Controller{
 		$slug_id = $expl[sizeof($expl) - 1];
 		unset($expl[sizeof($expl) - 1]);
 		$slug = implode('-', $expl);
+		if ($this->blog_model->exists_by_name($slug_id)){
 		//lang label link
-		$replace = array();
-		foreach ($this->data['language'] as $l){
-			$replace[$l['lang_shortcut']] = array(
-					'%s' => get_lang_slug($slug_id, $l['id'])."-".$slug_id,
+			$replace = array();
+			foreach ($this->data['language'] as $l){
+				$replace[$l['lang_shortcut']] = array(
+						'%s' => get_lang_slug($slug_id, $l['id'])."-".$slug_id,
+				);
+			}
+			$this->data['lang_label'] = get_lang_label(base_url().'%l/article/view/%s', $replace, $this->data['language'], $language);
+			//set all data
+			$this->data['style'] = array('style_blog');
+			$this->data['blog'] = $this->blog_model->get_by_blog_name($slug_id, array('project', 'user'));
+			$this->data['blog']['title'] = rawUrlDecode(read_file("./content/article/".$this->data['blog']['id']."/title".$language_ext.".txt"));
+			$this->data['blog']['body'] = rawUrlDecode(read_file("./content/article/".$this->data['blog']['id']."/body".$language_ext.".txt"));;
+			$tag_data = array(
+					'blog_id' => $this->data['blog']['id'],
+					'lang_id' => $language['id'],
 			);
+			$this->data['tag'] = $this->blog_in_tag_model->get_by_data($tag_data);
+			//fill data to layout
+			$layout_data['title'] = "SHK | ".get_lang_value($this->data['blog']['blog_name']);
+			$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
+			$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
+			$layout_data['body'] = $this->load->view("shk/article/body_view", $this->data, true);
+			$layout_data['menu'] = $this->load->view("shk/templates/menu", $this->data, true);
+			$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
+			$this->load->view("layout/default", $layout_data);
 		}
-		$this->data['lang_label'] = get_lang_label(base_url().'%l/article/view/%s', $replace, $this->data['language'], $language);
-		//set all data
-		$this->data['style'] = array('style_blog');
-		$this->data['blog'] = $this->blog_model->get_by_blog_name($slug_id, array('project', 'user'));
-		$this->data['blog']['title'] = rawUrlDecode(read_file("./content/article/".$this->data['blog']['id']."/title".$language_ext.".txt"));
-		$this->data['blog']['body'] = rawUrlDecode(read_file("./content/article/".$this->data['blog']['id']."/body".$language_ext.".txt"));;
-		$tag_data = array(
-				'blog_id' => $this->data['blog']['id'],
-				'lang_id' => $language['id'],
-		);
-		$this->data['tag'] = $this->blog_in_tag_model->get_by_data($tag_data);
-		//fill data to layout
-		$layout_data['title'] = "SHK | ".get_lang_value($this->data['blog']['blog_name']);
-		$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
-		$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
-		$layout_data['body'] = $this->load->view("shk/article/body_view", $this->data, true);
-		$layout_data['menu'] = $this->load->view("shk/templates/menu", $this->data, true);
-		$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
-		$this->load->view("layout/default", $layout_data);
+		else{
+			$this->data['lang_label'] = get_lang_label(base_url().'%l/article', array(), $this->data['language'], $language);
+			$this->data['block_header_title'] = $this->lang->line('wrong_id_header');
+			$this->data['block_body'] = $this->lang->line('wrong_id_body');
+			$layout_data['title'] = $this->lang->line('article_title_wrong_id');
+			$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
+			$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
+			$layout_data['body'] = $this->load->view("shk/templates/body_wrong_id", $this->data, true);
+			$layout_data['menu'] = $this->load->view("shk/templates/menu", $this->data, true);
+			$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
+			$this->load->view("layout/default", $layout_data);
+		}
 	}
 	
 	public function tag($tag, $page = 1, $language = "sk"){

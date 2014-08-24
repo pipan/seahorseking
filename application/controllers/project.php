@@ -20,11 +20,13 @@ class Project extends CI_Controller{
 		$this->load->model('gallery_model');
 		$this->load->model('project_in_link_model');
 		$this->load->model('user_in_project_model');
+		$this->load->model('static_page_model');
 		
 		$this->data['ongoing_project'] = $this->project_model->get();
 		$this->data['language'] = $this->language_model->get();
 		$this->data['link'] = $this->shk_link_model->get_active(array('link'));
 		$this->data['header_menu_clicked'] = "project";
+		$this->data['static_page'] = $this->static_page_model->get();
 	}
 	
 	public function index($language = "", $page = 1){
@@ -74,40 +76,54 @@ class Project extends CI_Controller{
 		$slug_id = $expl[sizeof($expl) - 1];
 		unset($expl[sizeof($expl) - 1]);
 		$slug = implode('-', $expl);
-		//lang label link
-		$replace = array();
-		foreach ($this->data['language'] as $l){
-			$replace[$l['lang_shortcut']] = array(
-					'%s' => get_lang_slug($slug_id, $l['id'])."-".$slug_id,
-			);
-		}
-		$this->data['lang_label'] = get_lang_label(base_url().'%l/project/view/'.$page.'/%s', $replace, $this->data['language'], $language);
+		if ($this->project_model->exists_by_name($slug_id)){
+			//lang label link
+			$replace = array();
+			foreach ($this->data['language'] as $l){
+				$replace[$l['lang_shortcut']] = array(
+						'%s' => get_lang_slug($slug_id, $l['id'])."-".$slug_id,
+				);
+			}
+			$this->data['lang_label'] = get_lang_label(base_url().'%l/project/view/'.$page.'/%s', $replace, $this->data['language'], $language);
+			
+			$this->data['style'] = array('style_blog');
+			$this->data['project'] = $this->project_model->get_by_name($slug_id, array());
+			$this->data['project']['link'] = $this->project_in_link_model->get_for_project($this->data['project']['id'], array('link'));
+			$this->data['project']['member'] = $this->user_in_project_model->get_in_project($this->data['project']['id'], array('user'));
+			$this->data['blog'] = $this->blog_model->get_list_by_project($this->data['project']['id'], array(), ($page -1) * $this->limit, $this->limit);
+			$i = 0;
+			foreach ($this->data['blog'] as $b){
+				$this->data['blog'][$i]['title'] = Blog_parser::pure_text(get_lang_value($b['blog_name'], $language['id']), $b['id'], $language_ext);
+				$this->data['blog'][$i]['body'] = word_limiter(Blog_parser::pure_text(read_file("./content/article/".$b['id']."/bodyTextarea".$language_ext.".txt"), $b['id'], $language_ext), 50);
+				$i++;
+			}
+			if ($page < 1){
+				$page = 1;
+			}
+			$this->data['page'] = $page;
+			$this->data['page_offset'] = 3;
+			$this->data['last_page'] = ceil($this->blog_model->count_all_by_project($this->data['project']['id']) / $this->limit);
 		
-		$this->data['style'] = array('style_blog');
-		$this->data['project'] = $this->project_model->get_by_name($slug_id, array());
-		$this->data['project']['link'] = $this->project_in_link_model->get_for_project($this->data['project']['id'], array('link'));
-		$this->data['project']['member'] = $this->user_in_project_model->get_in_project($this->data['project']['id'], array('user'));
-		$this->data['blog'] = $this->blog_model->get_list_by_project($this->data['project']['id'], array(), ($page -1) * $this->limit, $this->limit);
-		$i = 0;
-		foreach ($this->data['blog'] as $b){
-			$this->data['blog'][$i]['title'] = Blog_parser::pure_text(get_lang_value($b['blog_name'], $language['id']), $b['id'], $language_ext);
-			$this->data['blog'][$i]['body'] = word_limiter(Blog_parser::pure_text(read_file("./content/article/".$b['id']."/bodyTextarea".$language_ext.".txt"), $b['id'], $language_ext), 50);
-			$i++;
+			$layout_data['title'] = "SHK | ".get_lang_value($this->data['project']['project_name'], $language['id']);
+			$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
+			$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
+			$layout_data['body'] = $this->load->view("shk/project/body_view", $this->data, true);
+			$layout_data['menu'] = $this->load->view("shk/project/menu_project", $this->data, true);
+			$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
+			$this->load->view("layout/default", $layout_data);
 		}
-		if ($page < 1){
-			$page = 1;
+		else{
+			$this->data['lang_label'] = get_lang_label(base_url().'%l/project', array(), $this->data['language'], $language);
+			$this->data['block_header_title'] = $this->lang->line('wrong_id_header');
+			$this->data['block_body'] = $this->lang->line('wrong_id_body');
+			$layout_data['title'] = $this->lang->line('project_title_wrong_id');
+			$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
+			$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
+			$layout_data['body'] = $this->load->view("shk/templates/body_wrong_id", $this->data, true);
+			$layout_data['menu'] = $this->load->view("shk/templates/menu", $this->data, true);
+			$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
+			$this->load->view("layout/default", $layout_data);
 		}
-		$this->data['page'] = $page;
-		$this->data['page_offset'] = 3;
-		$this->data['last_page'] = ceil($this->blog_model->count_all_by_project($this->data['project']['id']) / $this->limit);
-	
-		$layout_data['title'] = "SHK | ".get_lang_value($this->data['project']['project_name'], $language['id']);
-		$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
-		$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
-		$layout_data['body'] = $this->load->view("shk/project/body_view", $this->data, true);
-		$layout_data['menu'] = $this->load->view("shk/project/menu_project", $this->data, true);
-		$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
-		$this->load->view("layout/default", $layout_data);
 	}
 	
 	public function gallery($slug, $language = ""){
@@ -124,29 +140,43 @@ class Project extends CI_Controller{
 		$slug_id = $expl[sizeof($expl) - 1];
 		unset($expl[sizeof($expl) - 1]);
 		$slug = implode('-', $expl);
-		//lang label link
-		$replace = array();
-		foreach ($this->data['language'] as $l){
-			$replace[$l['lang_shortcut']] = array(
-					'%s' => get_lang_slug($slug_id, $l['id'])."-".$slug_id,
-			);
-		}
-		$this->data['lang_label'] = get_lang_label(base_url().'%l/project/gallery/%s', $replace, $this->data['language'], $language);
-	
-		$this->data['style'] = array('style_blog', 'style_gallery');
-		$this->data['jscript'] = array('jscript_gallery');
-		$this->data['project'] = $this->project_model->get_by_name($slug_id, array());
-		$this->data['project']['link'] = $this->project_in_link_model->get_for_project($this->data['project']['id'], array('link'));
-		$this->data['project']['member'] = $this->user_in_project_model->get_in_project($this->data['project']['id'], array('user'));
-		$this->data['gallery'] = $this->gallery_model->get_by_project($this->data['project']['id']);
-		$this->data['block_header_title'] = get_lang_value($this->data['project']['project_name'], $language['id'])." ".$this->lang->line('project_gallery');
+		if ($this->project_model->exists_by_name($slug_id)){
+			//lang label link
+			$replace = array();
+			foreach ($this->data['language'] as $l){
+				$replace[$l['lang_shortcut']] = array(
+						'%s' => get_lang_slug($slug_id, $l['id'])."-".$slug_id,
+				);
+			}
+			$this->data['lang_label'] = get_lang_label(base_url().'%l/project/gallery/%s', $replace, $this->data['language'], $language);
 		
-		$layout_data['title'] = "SHK | ".get_lang_value($this->data['project']['project_name'], $language['id']);
-		$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
-		$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
-		$layout_data['body'] = $this->load->view("shk/project/body_gallery", $this->data, true);
-		$layout_data['menu'] = $this->load->view("shk/project/menu_project", $this->data, true);
-		$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
-		$this->load->view("layout/default", $layout_data);
+			$this->data['style'] = array('style_blog', 'style_gallery');
+			$this->data['jscript'] = array('jscript_gallery');
+			$this->data['project'] = $this->project_model->get_by_name($slug_id, array());
+			$this->data['project']['link'] = $this->project_in_link_model->get_for_project($this->data['project']['id'], array('link'));
+			$this->data['project']['member'] = $this->user_in_project_model->get_in_project($this->data['project']['id'], array('user'));
+			$this->data['gallery'] = $this->gallery_model->get_by_project($this->data['project']['id']);
+			$this->data['block_header_title'] = get_lang_value($this->data['project']['project_name'], $language['id'])." ".$this->lang->line('project_gallery');
+			
+			$layout_data['title'] = "SHK | ".get_lang_value($this->data['project']['project_name'], $language['id']);
+			$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
+			$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
+			$layout_data['body'] = $this->load->view("shk/project/body_gallery", $this->data, true);
+			$layout_data['menu'] = $this->load->view("shk/project/menu_project", $this->data, true);
+			$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
+			$this->load->view("layout/default", $layout_data);
+		}
+		else{
+			$this->data['lang_label'] = get_lang_label(base_url().'%l/project', array(), $this->data['language'], $language);
+			$this->data['block_header_title'] = $this->lang->line('wrong_id_header');
+			$this->data['block_body'] = $this->lang->line('wrong_id_body');
+			$layout_data['title'] = $this->lang->line('project_title_wrong_id');
+			$layout_data['links'] = $this->load->view("shk/templates/links", $this->data, true);
+			$layout_data['header'] = $this->load->view("shk/templates/header", $this->data, true);
+			$layout_data['body'] = $this->load->view("shk/templates/body_wrong_id", $this->data, true);
+			$layout_data['menu'] = $this->load->view("shk/templates/menu", $this->data, true);
+			$layout_data['footer'] = $this->load->view("shk/templates/footer", $this->data, true);
+			$this->load->view("layout/default", $layout_data);
+		}
 	}
 }

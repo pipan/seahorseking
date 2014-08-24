@@ -55,15 +55,25 @@ function load(){
 	editor.components.video.render();
 	editor.components.tag.render();
 	<?php 
-	if (isset($thumbnail)){
+	if (isset($blog_id)){
 		?>
 		editor.id = <?php echo $blog_id;?>;
 		<?php
-	} 
+	}
 	if (isset($blog_lang)){
 		?>
 		editor.lang = '<?php echo $blog_lang;?>';
 		<?php	
+	}
+	if (isset($url_save)){
+		?>
+		editor.urlSave = "<?php echo $url_save;?>";
+		<?php
+	}
+	if (isset($url)){
+		?>
+		editor.url = "<?php echo $url;?>";
+		<?php
 	}
 	?>
 }

@@ -17,11 +17,13 @@ class Login extends CI_Controller{
 		$this->load->model('blog_model');
 		$this->load->model('project_model');
 		$this->load->model('shk_link_model');
+		$this->load->model('static_page_model');
 		
 		$this->lang->load("general", "en");
 		$this->data['lang'] = $this->lang;
 		$this->data['lang_use'] = $this->language_model->get_by_shortcut('en');
 		$this->data['ongoing_project'] = $this->project_model->get();
+		$this->data['static_page'] = $this->static_page_model->get();
 	}
 	
 	public function login_validation(){

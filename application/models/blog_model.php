@@ -27,6 +27,13 @@ class Blog_model extends MY_Model{
 		return array('blog.id', 'blog.user_id', 'blog.blog_name', 'blog.post_date', 'blog.thumbnail', 'blog.project_id');
 	}
 	
+	public function exists_by_name($id){
+		$this->db->select('id');
+		$this->db->from($this->table);
+		$this->db->where('blog_name', $id);
+		return ($this->db->count_all_results() > 0);
+	}
+	
 	public function get_by_blog_name($blog_name, $join = array()){
 		$this->db->select($this->join($join, $this->select_id));
 		$query = $this->db->get_where($this->table, array('blog_name =' => $blog_name));

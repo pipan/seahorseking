@@ -45,6 +45,8 @@ class Article extends CI_Controller{
 			
 			$this->data['jscript'] = array('jscript_blog_oop', 'jscript_editor');
 			$this->data['style'] = array('style_blog', 'style_blog_edit');
+			$this->data['url'] = "cms/article";
+			$this->data['url_save'] = "/save_new_blog";
 			
 			if ($id == 0 || $this->blog_model->exists($id)){
 				if ($id == 0){

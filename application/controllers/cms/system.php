@@ -209,6 +209,18 @@ class System extends CI_Controller{
 				COLLATE utf8_general_ci,
 				ENGINE innoDB");
 		
+		//Table static_page
+		$this->db->query("CREATE TABLE IF NOT EXISTS static_page(
+				id int(9) NOT NULL AUTO_INCREMENT,
+				page_title int(9) NOT NULL,
+				folder varchar(30) NOT NULL,
+				position int(9) NOT NULL,
+				post_date datetime NOT NULL,
+				PRIMARY KEY (id),
+				FOREIGN KEY (page_title) REFERENCES translation_group(id))
+				COLLATE utf8_general_ci,
+				ENGINE innoDB");
+		
 		//ADD foreign key to project
 		$this->db->query("ALTER TABLE project
 				ADD FOREIGN KEY (blog_id) REFERENCES blog(id)");
@@ -218,6 +230,7 @@ class System extends CI_Controller{
 		//empty tables
 		$this->db->empty_table('user');
 		$this->db->empty_table('permission');
+		$this->db->empty_table('static_page');
 		$this->db->empty_table('language');
 		$this->db->empty_table('private_label');
 		
@@ -260,7 +273,13 @@ class System extends CI_Controller{
 		
 		//private_label
 		$data = array(
+				'id' => 1,
 				'label' => 'position',
+		);
+		$this->db->insert('private_label', $data);
+		$data = array(
+				'id' => 2,
+				'label' => 'static page',
 		);
 		$this->db->insert('private_label', $data);
 	}

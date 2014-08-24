@@ -17,12 +17,14 @@ class Member extends CI_Controller{
 		$this->load->model('blog_model');
 		$this->load->model('project_model');
 		$this->load->model('user_in_link_model');
+		$this->load->model('static_page_model');
 		
 		$this->data['ongoing_project'] = $this->project_model->get();
 		$this->data['language'] = $this->language_model->get();
 		$this->data['link'] = $this->shk_link_model->get_active(array('link'));
 		$this->data['header_menu_clicked'] = "member";
 		$this->data['style'] = array('style_member');
+		$this->data['static_page'] = $this->static_page_model->get();
 	}
 	
 	public function index($language = "", $page = 1){

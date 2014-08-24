@@ -11,11 +11,11 @@
 	}
 	?>
 </div>
-
+<!-- 
 <div style="position: absolute; top: 0px; right: 80px;">
 	<input type="text" name="font" onInput="change_font(this);" />
 </div>
-
+ -->
 <div id="logo">
 	<a href="<?php echo base_url().$lang_use['lang_shortcut'];?>">
 		<div id="header-logo">
@@ -39,7 +39,15 @@
 	?>
 	<a href="<?php echo base_url().$lang_use['lang_shortcut']."/article";?>" class="<?php echo header_menu_class($header_menu_clicked, 'article');?>"><?php echo $lang->line('header_menu_article');?></a>
 	<a href="<?php echo base_url().$lang_use['lang_shortcut']."/project";?>" class="<?php echo header_menu_class($header_menu_clicked, 'project');?>"><?php echo $lang->line('header_menu_project');?></a>
-	<a href="<?php echo base_url().$lang_use['lang_shortcut']."/about";?>" class="<?php echo header_menu_class($header_menu_clicked, 'about');?>"><?php echo $lang->line('header_menu_about');?></a>
 	<a href="<?php echo base_url().$lang_use['lang_shortcut']."/member";?>" class="<?php echo header_menu_class($header_menu_clicked, 'member');?>"><?php echo $lang->line('header_menu_member');?></a>
-	<a href="<?php echo base_url().$lang_use['lang_shortcut']."/contact";?>" class="<?php echo header_menu_class($header_menu_clicked, 'contact');?>"><?php echo $lang->line('header_menu_contact');?></a>
+	<?php 
+	if (isset($static_page)){
+		foreach ($static_page as $page){
+			$db_lang = get_lang_db($page['page_title'], $lang_use['id']);
+			?>
+			<a href="<?php echo base_url().$lang_use['lang_shortcut']."/".$db_lang['slug']."-".$page['page_title'];?>" class="<?php echo header_menu_class($header_menu_clicked, $page['folder']);?>"><?php echo $db_lang['lang_value'];?></a>
+			<?php
+		}
+	}
+	?>
 </div>

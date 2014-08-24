@@ -4,6 +4,10 @@
 * gray: #636363
 * cyan: #00cca7
 */
+@font-face {
+	font-family: 'SegoeUILight';
+	src: url(../fonts/segoeuil.ttf) format("truetype");
+}
 body{
 	margin: 0px;
 	padding: 0px;	
@@ -12,13 +16,12 @@ body{
 	background-attachment:fixed;
 	background-size: cover;
 	background-repeat: no-repeat;
-	font-family: 'Segoe UI Light', calibri;
+	font-family: SegoeUILight;
 }
 p{
-	//margin:0px;
 	text-align: justify;
 	line-height: 150%;
-	font-size: 18px;
+	font-size: 16px;
 }
 label{
 	cursor: pointer;
@@ -123,7 +126,7 @@ div{
 			width: 11px;
 		}
 	#language{
-		position: absolute;
+		position: fixed;
 		right: 0px;
 		top:0px;
 	}
@@ -201,7 +204,6 @@ div{
 		padding: 0px 20px 0px 0px;
 		border-right: solid 1px #3a4241;
 		border-bottom: none;
-	 	min-height:200px;
 	}
 	#menu{
 		position:relative;
@@ -247,7 +249,7 @@ div{
 	}
 .scroll#body{
 	position:relative;
-	margin: 65px auto 20px auto;
+	margin: 68px auto 20px auto;
 	width:1000px;
 	min-width: 700px;
 	height:auto;
@@ -292,7 +294,6 @@ div{
 			padding: 0px;
 			border-right: none;
 			border-bottom: solid 1px #3a4241;
-		 	min-height: 0px;
 		}
 		#menu{
 			position:relative;

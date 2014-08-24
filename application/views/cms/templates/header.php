@@ -22,4 +22,5 @@
 	<a href="<?php echo base_url()."index.php/cms/article";?>" class="<?php echo header_menu_class($header_menu_clicked, 'article');?>">Articles</a>
 	<a href="<?php echo base_url()."index.php/cms/project";?>" class="<?php echo header_menu_class($header_menu_clicked, 'project');?>">Projects</a>
 	<a href="<?php echo base_url()."index.php/cms/link";?>" class="<?php echo header_menu_class($header_menu_clicked, 'link');?>">Links</a>
+	<a href="<?php echo base_url()."index.php/cms/static_page";?>" class="<?php echo header_menu_class($header_menu_clicked, 'static page');?>">Static pages</a>
 </div>

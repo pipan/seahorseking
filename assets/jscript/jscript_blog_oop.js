@@ -23,6 +23,8 @@ function EditorApplication(){
 	this.body = "";
 	this.id = 0;
 	this.lang = 0;
+	this.urlSave = "";
+	this.url = "";
 	
 	this.setTitle = function(){
 		this.title = $(this.titleTextareaId).val();
@@ -92,19 +94,19 @@ function EditorApplication(){
 	this.save = function(){
 		$('body').css({'cursor':'wait'});
 		$('#menu a').css({'cursor':'wait'});
-		if (editor.id > 0){
-			url = BASE_URL + "index.php/cms/article/save_new_blog/" + editor.id + "/" + editor.lang;
+		if (this.id > 0){
+			url = BASE_URL + "index.php/" + editor.url + this.urlSave + "/" + this.id + "/" + this.lang;
 		}
 		else{
-			url = BASE_URL + "index.php/cms/article/save_new_blog";
+			url = BASE_URL + "index.php/" + editor.url + this.urlSave;
 		}
 		var post = $.post(url, this.getSendableData());
 		post.done(function(data, textStatus, jqXHR){
 			if (jqXHR.responseText == "" || jqXHR.responseText == "fail"){
-				redirect(BASE_URL + "index.php/cms/article/error_save");
+				redirect(BASE_URL + "index.php/" + this.url + "/error_save");
 			}
 			else if (jqXHR.responseText == "success"){
-				redirect(BASE_URL + "index.php/cms/article");
+				redirect(BASE_URL + "index.php/" + editor.url);
 			}
 			else{
 				$("#result").html(jqXHR.responseText);
@@ -114,7 +116,7 @@ function EditorApplication(){
 		});
 		post.fail(function(jqXHR, textStatus, errorThrown){
 			if (jqXHR.responseText == "" || jqXHR.responseText == "fail"){
-				redirect(BASE_URL + "index.php/cms/article/error_save");
+				redirect(BASE_URL + "index.php/cms/" + this.url + "/error_save");
 			}
 			else{
 				$("#result").html(jqXHR.responseText);

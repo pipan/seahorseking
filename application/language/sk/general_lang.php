@@ -10,3 +10,7 @@ $lang['header_menu_contact'] = "Kontakt";
 $lang['menu_ongoing_project'] = "Prebiehajúce projekty";
 
 $lang['word_more'] = "viac";
+
+//wrong id
+$lang['wrong_id_header'] = "Pardon";
+$lang['wrong_id_body'] = "Ospravedlňujeme sa, ale táto stránka nie je dostupná";
