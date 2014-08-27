@@ -42,7 +42,7 @@ class Project extends CI_Controller{
 		$this->data['project'] = $this->project_model->get_list(array('blog'), ($page -1) * $this->limit, $this->limit);
 		$i = 0;
 		foreach ($this->data['project'] as $p){
-			$this->data['project'][$i]['body'] = word_limiter(Blog_parser::pure_text(read_file("./content/article/".$p['blog_id']."/bodyTextarea".$language_ext.".txt"), $p['blog_id'], $language_ext), 50);
+			$this->data['project'][$i]['body'] = word_limiter($this->blog_parser->pure_text(read_file("./content/article/".$p['blog_id']."/bodyTextarea".$language_ext.".txt"), $p['blog_id'], $language_ext, true), 50);
 			$this->data['project'][$i]['link'] = $this->project_in_link_model->get_for_project($p['id'], array('link'));
 			$i++;
 		}
@@ -93,8 +93,8 @@ class Project extends CI_Controller{
 			$this->data['blog'] = $this->blog_model->get_list_by_project($this->data['project']['id'], array(), ($page -1) * $this->limit, $this->limit);
 			$i = 0;
 			foreach ($this->data['blog'] as $b){
-				$this->data['blog'][$i]['title'] = Blog_parser::pure_text(get_lang_value($b['blog_name'], $language['id']), $b['id'], $language_ext);
-				$this->data['blog'][$i]['body'] = word_limiter(Blog_parser::pure_text(read_file("./content/article/".$b['id']."/bodyTextarea".$language_ext.".txt"), $b['id'], $language_ext), 50);
+				$this->data['blog'][$i]['title'] = $this->blog_parser->pure_text(get_lang_value($b['blog_name'], $language['id']), $b['id'], $language_ext);
+				$this->data['blog'][$i]['body'] = word_limiter($this->blog_parser->pure_text(read_file("./content/article/".$b['id']."/bodyTextarea".$language_ext.".txt"), $b['id'], $language_ext, true), 50);
 				$i++;
 			}
 			if ($page < 1){
